@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Include Prism.js -->
+    <link href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-json.min.js"></script>
+
+    <title>V3 Manifest Builder</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 0;
+            background: white;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 500px;
+            gap: 30px;
+        }
+
+        .panel {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .panel h2 {
+            margin-bottom: 20px;
+            font-size: 1.3em;
+            color: #222;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            font-size: 0.9em;
+        }
+
+        .required::after {
+            content: " *";
+            color: #e74c3c;
+        }
+
+        input[type="text"],
+        input[type="url"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.9em;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 60px;
+            font-family: monospace;
+            font-size: 0.85em;
+        }
+
+        .hint {
+            font-size: 0.8em;
+            color: #999;
+            margin-top: 4px;
+        }
+
+        .output {
+            position: sticky;
+            top: 20px;
+            max-height: calc(100vh - 40px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        pre {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 0.85em;
+            line-height: 1.5;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.9em;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+
+        .btn-primary {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #45a049;
+        }
+
+        .btn-secondary {
+            background: #2196F3;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #0b7dda;
+        }
+
+        .section-title {
+            font-size: 1.1em;
+            font-weight: 600;
+            margin: 30px 0 15px 0;
+            color: #444;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #f0f0f0;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 10;
+        }
+
+        .section-title:first-child {
+            margin-top: 0;
+        }
+
+        .subsection-title {
+            font-size: 0.95em;
+            font-weight: 600;
+            margin: 20px 0 12px 0;
+            color: #555;
+        }
+
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 8px;
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 10px;
+            background: #fafafa;
+            border-radius: 4px;
+            border: 1px solid #eee;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .checkbox-item input {
+            margin-right: 8px;
+        }
+
+        .checkbox-item label {
+            margin: 0;
+            font-weight: 400;
+            font-size: 0.85em;
+        }
+
+        .icon-inputs {
+            display: grid;
+            grid-template-columns: 80px 1fr;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .icon-inputs label {
+            text-align: right;
+            font-size: 0.85em;
+        }
+
+        .array-input {
+            background: #fafafa;
+            padding: 15px;
+            border-radius: 4px;
+            border: 1px solid #eee;
+            margin-top: 10px;
+        }
+
+        .array-item {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .array-item input,
+        .array-item select {
+            flex: 1;
+        }
+
+        .btn-remove {
+            background: #e74c3c;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85em;
+        }
+
+        .btn-add {
+            background: #3498db;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85em;
+            margin-top: 5px;
+        }
+
+        .btn-remove:hover {
+            background: #c0392b;
+        }
+
+        .btn-add:hover {
+            background: #2980b9;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #323232;
+            color: white;
+            padding: 16px 24px;
+            border-radius: 4px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .collapsible {
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .collapsible::after {
+            content: '▼';
+            font-size: 0.8em;
+        }
+
+        .collapsible.collapsed::after {
+            content: '▶';
+        }
+
+        .collapsible-content {
+            max-height: 2000px;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .collapsible-content.collapsed {
+            max-height: 0;
+        }
+
+        @media (max-width: 1200px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .output {
+                position: static;
+                max-height: 600px;
+            }
+        }
+
+
+        /* Footer styles */
+        footer {
+            color: #ffb6ad;
+            text-align: center;
+            background: #ffedeb;
+            padding: 15px;
+            width: 100%;
+            margin-top: auto;
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        footer a {
+            color: #ff9100;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>⚡ V3 Manifest Builder</h1>
+            <p class="subtitle">Complete Chrome Extension manifest.json generator with all official fields</p>
+        </header>
+
+        <div class="grid">
+            <div class="panel">
+                <h2>Configuration</h2>
+
+                <!-- BASIC INFORMATION -->
+                <div class="section-title">Basic Information</div>
+
+                <div class="form-group">
+                    <label for="name" class="required">Name</label>
+                    <input type="text" id="name" placeholder="My Awesome Extension">
+                    <div class="hint">Maximum 45 characters for Chrome Web Store</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="version" class="required">Version</label>
+                    <input type="text" id="version" value="1.0.0" placeholder="1.0.0">
+                    <div class="hint">Format: 1-4 dot-separated integers (e.g., 1.0.0.1)</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="description" class="required">Description</label>
+                    <textarea id="description" placeholder="A brief description of your extension"></textarea>
+                    <div class="hint">Maximum 132 characters</div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label for="short_name">Short Name</label>
+                        <input type="text" id="short_name" placeholder="My Ext">
+                        <div class="hint">Max 12 characters</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="version_name">Version Name</label>
+                        <input type="text" id="version_name" placeholder="1.0 beta">
+                        <div class="hint">Display version</div>
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label for="author">Author</label>
+                        <input type="text" id="author" placeholder="Your Name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="homepage_url">Homepage URL</label>
+                        <input type="url" id="homepage_url" placeholder="https://example.com">
+                    </div>
+                </div>
+
+                <!-- ICONS -->
+                <div class="section-title">Icons</div>
+                <div class="form-group">
+                    <div class="icon-inputs">
+                        <label>16px:</label>
+                        <input type="text" id="icon16" placeholder="icons/icon16.png">
+
+                        <label>32px:</label>
+                        <input type="text" id="icon32" placeholder="icons/icon32.png">
+
+                        <label>48px:</label>
+                        <input type="text" id="icon48" placeholder="icons/icon48.png">
+
+                        <label>128px:</label>
+                        <input type="text" id="icon128" placeholder="icons/icon128.png">
+                    </div>
+                </div>
+
+                <!-- ACTION (BROWSER ACTION) -->
+                <div class="section-title collapsible" onclick="toggleSection('action')">Browser Action</div>
+                <div id="action-content" class="collapsible-content">
+                    <div class="form-group">
+                        <label for="action_popup">Default Popup</label>
+                        <input type="text" id="action_popup" placeholder="popup.html">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="action_title">Default Title</label>
+                        <input type="text" id="action_title" placeholder="Extension Name">
+                    </div>
+
+                    <div class="subsection-title">Action Icon</div>
+                    <div class="icon-inputs">
+                        <label>16px:</label>
+                        <input type="text" id="action_icon16" placeholder="icons/icon16.png">
+
+                        <label>32px:</label>
+                        <input type="text" id="action_icon32" placeholder="icons/icon32.png">
+
+                        <label>48px:</label>
+                        <input type="text" id="action_icon48" placeholder="icons/icon48.png">
+
+                        <label>128px:</label>
+                        <input type="text" id="action_icon128" placeholder="icons/icon128.png">
+                    </div>
+                </div>
+
+                <!-- BACKGROUND -->
+                <div class="section-title collapsible" onclick="toggleSection('background')">Background Service Worker
+                </div>
+                <div id="background-content" class="collapsible-content">
+                    <div class="form-group">
+                        <label for="service_worker">Service Worker</label>
+                        <input type="text" id="service_worker" placeholder="background.js">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="background_type">Type</label>
+                        <select id="background_type">
+                            <option value="">Classic (default)</option>
+                            <option value="module">ES Module</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- CONTENT SCRIPTS -->
+                <div class="section-title collapsible" onclick="toggleSection('content')">Content Scripts</div>
+                <div id="content-content" class="collapsible-content">
+                    <div id="content-scripts-container"></div>
+                    <button class="btn-add" onclick="addContentScript()">+ Add Content Script</button>
+                </div>
+
+                <!-- PERMISSIONS -->
+                <div class="section-title collapsible" onclick="toggleSection('permissions')">Permissions</div>
+                <div id="permissions-content" class="collapsible-content">
+                    <div class="form-group">
+                        <div class="checkbox-grid" id="permissions-list"></div>
+                    </div>
+                </div>
+
+                <!-- OPTIONAL PERMISSIONS -->
+                <div class="section-title collapsible" onclick="toggleSection('optional-permissions')">Optional
+                    Permissions</div>
+                <div id="optional-permissions-content" class="collapsible-content">
+                    <div class="form-group">
+                        <div class="checkbox-grid" id="optional-permissions-list"></div>
+                    </div>
+                </div>
+
+                <!-- HOST PERMISSIONS -->
+                <div class="section-title collapsible" onclick="toggleSection('host')">Host Permissions</div>
+                <div id="host-content" class="collapsible-content">
+                    <div class="form-group">
+                        <label>Host Permissions</label>
+                        <textarea id="host_permissions"
+                            placeholder="https://*.google.com/*&#10;https://*.github.com/*"></textarea>
+                        <div class="hint">One URL pattern per line</div>
+                    </div>
+                </div>
+
+                <!-- OPTIONAL HOST PERMISSIONS -->
+                <div class="section-title collapsible" onclick="toggleSection('optional-host')">Optional Host
+                    Permissions</div>
+                <div id="optional-host-content" class="collapsible-content">
+                    <div class="form-group">
+                        <label>Optional Host Permissions</label>
+                        <textarea id="optional_host_permissions" placeholder="https://*/*"></textarea>
+                        <div class="hint">One URL pattern per line</div>
+                    </div>
+                </div>
+
+                <!-- OPTIONS PAGE -->
+                <div class="section-title collapsible" onclick="toggleSection('options')">Options Page</div>
+                <div id="options-content" class="collapsible-content">
+                    <div class="form-group">
+                        <label for="options_page">Options Page (Legacy)</label>
+                        <input type="text" id="options_page" placeholder="options.html">
+                    </div>
+
+                    <div class="subsection-title">Options UI (Recommended)</div>
+
+                    <div class="form-group">
+                        <label for="options_ui_page">Page</label>
+                        <input type="text" id="options_ui_page" placeholder="options.html">
+                    </div>
+
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="options_ui_open_in_tab">
+                            Open in new tab
+                        </label>
+                    </div>
+                </div>
+
+                <!-- SIDE PANEL -->
+                <div class="section-title collapsible" onclick="toggleSection('sidepanel')">Side Panel</div>
+                <div id="sidepanel-content" class="collapsible-content">
+                    <div class="form-group">
+                        <label for="side_panel_path">Default Path</label>
+                        <input type="text" id="side_panel_path" placeholder="sidepanel.html">
+                    </div>
+                </div>
+
+                <!-- DEVTOOLS -->
+                <div class="section-title collapsible" onclick="toggleSection('devtools')">DevTools</div>
+                <div id="devtools-content" class="collapsible-content">
+                    <div class="form-group">
+                        <label for="devtools_page">DevTools Page</label>
+                        <input type="text" id="devtools_page" placeholder="devtools.html">
+                    </div>
+                </div>
+
+                <!-- WEB ACCESSIBLE RESOURCES -->
+                <div class="section-title collapsible" onclick="toggleSection('web-resources')">Web Accessible Resources
+                </div>
+                <div id="web-resources-content" class="collapsible-content">
+                    <div id="web-resources-container"></div>
+                    <button class="btn-add" onclick="addWebResource()">+ Add Resource Group</button>
+                </div>
+
+                <!-- OMNIBOX -->
+                <div class="section-title collapsible" onclick="toggleSection('omnibox')">Omnibox</div>
+                <div id="omnibox-content" class="collapsible-content">
+                    <div class="form-group">
+                        <label for="omnibox_keyword">Keyword</label>
+                        <input type="text" id="omnibox_keyword" placeholder="myextension">
+                        <div class="hint">Keyword to trigger your extension in address bar</div>
+                    </div>
+                </div>
+
+                <!-- COMMANDS -->
+                <div class="section-title collapsible" onclick="toggleSection('commands')">Commands (Keyboard Shortcuts)
+                </div>
+                <div id="commands-content" class="collapsible-content">
+                    <div id="commands-container"></div>
+                    <button class="btn-add" onclick="addCommand()">+ Add Command</button>
+                </div>
+
+                <!-- DECLARATIVE NET REQUEST -->
+                <div class="section-title collapsible" onclick="toggleSection('dnr')">Declarative Net Request</div>
+                <div id="dnr-content" class="collapsible-content">
+                    <div id="dnr-container"></div>
+                    <button class="btn-add" onclick="addDNRRule()">+ Add Rule Resource</button>
+                </div>
+
+                <!-- EXTERNALLY CONNECTABLE -->
+                <div class="section-title collapsible" onclick="toggleSection('externally')">Externally Connectable
+                </div>
+                <div id="externally-content" class="collapsible-content">
+                    <div class="form-group">
+                        <label>Matches</label>
+                        <textarea id="externally_matches" placeholder="https://example.com/*"></textarea>
+                        <div class="hint">One URL pattern per line</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Extension IDs</label>
+                        <textarea id="externally_ids" placeholder="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"></textarea>
+                        <div class="hint">One extension ID per line</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="externally_tls">
+                            Accepts TLS Channel ID
+                        </label>
+                    </div>
+                </div>
+
+                <!-- CHROME URL OVERRIDES -->
+                <div class="section-title collapsible" onclick="toggleSection('overrides')">Chrome URL Overrides</div>
+                <div id="overrides-content" class="collapsible-content">
+                    <div class="form-group">
+                        <label for="override_newtab">New Tab</label>
+                        <input type="text" id="override_newtab" placeholder="newtab.html">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="override_bookmarks">Bookmarks</label>
+                        <input type="text" id="override_bookmarks" placeholder="bookmarks.html">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="override_history">History</label>
+                        <input type="text" id="override_history" placeholder="history.html">
+                    </div>
+                </div>
+
+                <!-- CONTENT SECURITY POLICY -->
+                <div class="section-title collapsible" onclick="toggleSection('csp')">Content Security Policy</div>
+                <div id="csp-content" class="collapsible-content">
+                    <div class="form-group">
+                        <label for="csp_extension">Extension Pages</label>
+                        <textarea id="csp_extension" placeholder="script-src 'self'; object-src 'self'"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="csp_sandbox">Sandbox</label>
+                        <textarea id="csp_sandbox" placeholder="sandbox allow-scripts; script-src 'self'"></textarea>
+                    </div>
+                </div>
+
+                <!-- SANDBOX -->
+                <div class="section-title collapsible" onclick="toggleSection('sandbox')">Sandbox</div>
+                <div id="sandbox-content" class="collapsible-content">
+                    <div class="form-group">
+                        <label>Sandboxed Pages</label>
+                        <textarea id="sandbox_pages" placeholder="sandbox.html"></textarea>
+                        <div class="hint">One page path per line</div>
+                    </div>
+                </div>
+
+                <!-- STORAGE -->
+                <div class="section-title collapsible" onclick="toggleSection('storage')">Storage</div>
+                <div id="storage-content" class="collapsible-content">
+                    <div class="form-group">
+                        <label for="managed_schema">Managed Schema</label>
+                        <input type="text" id="managed_schema" placeholder="schema.json">
+                    </div>
+                </div>
+
+                <!-- OAUTH2 -->
+                <div class="section-title collapsible" onclick="toggleSection('oauth')">OAuth2</div>
+                <div id="oauth-content" class="collapsible-content">
+                    <div class="form-group">
+                        <label for="oauth_client_id">Client ID</label>
+                        <input type="text" id="oauth_client_id" placeholder="123456789.apps.googleusercontent.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Scopes</label>
+                        <textarea id="oauth_scopes"
+                            placeholder="https://www.googleapis.com/auth/userinfo.email"></textarea>
+                        <div class="hint">One scope per line</div>
+                    </div>
+                </div>
+
+                <!-- CROSS ORIGIN POLICIES -->
+                <div class="section-title collapsible" onclick="toggleSection('cors')">Cross-Origin Policies</div>
+                <div id="cors-content" class="collapsible-content">
+                    <div class="form-group">
+                        <label for="coep">Cross-Origin-Embedder-Policy</label>
+                        <select id="coep">
+                            <option value="">None</option>
+                            <option value="require-corp">require-corp</option>
+                            <option value="credentialless">credentialless</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="coop">Cross-Origin-Opener-Policy</label>
+                        <select id="coop">
+                            <option value="">None</option>
+                            <option value="same-origin">same-origin</option>
+                            <option value="same-origin-allow-popups">same-origin-allow-popups</option>
+                            <option value="restrict-properties">restrict-properties</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- ADVANCED SETTINGS -->
+                <div class="section-title collapsible" onclick="toggleSection('advanced')">Advanced Settings</div>
+                <div id="advanced-content" class="collapsible-content">
+                    <div class="form-group">
+                        <label for="minimum_chrome_version">Minimum Chrome Version</label>
+                        <input type="text" id="minimum_chrome_version" placeholder="88">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="incognito">Incognito Behavior</label>
+                        <select id="incognito">
+                            <option value="">Default (spanning)</option>
+                            <option value="spanning">Spanning</option>
+                            <option value="split">Split</option>
+                            <option value="not_allowed">Not Allowed</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="default_locale">Default Locale</label>
+                        <input type="text" id="default_locale" placeholder="en">
+                        <div class="hint">Required if _locales directory exists</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="update_url">Update URL</label>
+                        <input type="url" id="update_url" placeholder="https://example.com/updates.xml">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="key">Key</label>
+                        <textarea id="key" placeholder="MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA..."></textarea>
+                        <div class="hint">Public key for consistent extension ID</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="offline_enabled">
+                            Offline Enabled
+                        </label>
+                    </div>
+                </div>
+
+                <!-- TTS ENGINE -->
+                <div class="section-title collapsible" onclick="toggleSection('tts')">Text-to-Speech Engine</div>
+                <div id="tts-content" class="collapsible-content">
+                    <div id="tts-container"></div>
+                    <button class="btn-add" onclick="addTTSVoice()">+ Add Voice</button>
+                </div>
+
+                <!-- REQUIREMENTS -->
+                <div class="section-title collapsible" onclick="toggleSection('requirements')">Requirements</div>
+                <div id="requirements-content" class="collapsible-content">
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="require_3d">
+                            Require 3D Graphics (WebGL)
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- OUTPUT PANEL -->
+            <div class="panel output">
+                <h2>Generated manifest.json</h2>
+                <pre><code id="output" class="language-json">{
+  "manifest_version": 3,
+  "name": "My Extension",
+  "version": "1.0.0",
+  "description": "Extension description"
+                }</code></pre>
+                <div class="button-group">
+                    <button class="btn-primary" onclick="downloadManifest()">📥 Download</button>
+                    <button class="btn-secondary" onclick="copyToClipboard()">📋 Copy</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">Copied to clipboard!</div>
+
+    <footer>
+        <p>Copyright © 2025 <a href="https://evenzero.in">evenzero</a></p>
+    </footer>
+    <script>
+        // All valid Manifest V3 permissions (verified from Chrome Extension docs)
+        const PERMISSIONS = [
+            'activeTab', 'alarms', 'background', 'bookmarks', 'browsingData',
+            'certificateProvider', 'clipboardRead', 'clipboardWrite', 'contentSettings',
+            'contextMenus', 'cookies', 'debugger', 'declarativeContent',
+            'declarativeNetRequest', 'declarativeNetRequestWithHostAccess',
+            'declarativeNetRequestFeedback', 'desktopCapture', 'documentScan',
+            'downloads', 'downloads.open', 'downloads.ui', 'enterprise.deviceAttributes',
+            'enterprise.hardwarePlatform', 'enterprise.networkingAttributes',
+            'enterprise.platformKeys', 'favicon', 'fileBrowserHandler',
+            'fileSystemProvider', 'fontSettings', 'gcm', 'geolocation',
+            'history', 'identity', 'identity.email', 'idle', 'loginState',
+            'management', 'nativeMessaging', 'notifications', 'offscreen',
+            'pageCapture', 'platformKeys', 'power', 'printerProvider',
+            'printing', 'printingMetrics', 'privacy', 'processes', 'proxy',
+            'readingList', 'runtime', 'scripting', 'search', 'sessions',
+            'sidePanel', 'storage', 'system.cpu', 'system.display',
+            'system.memory', 'system.storage', 'tabCapture', 'tabGroups',
+            'tabs', 'topSites', 'tts', 'ttsEngine', 'unlimitedStorage',
+            'vpnProvider', 'wallpaper', 'webAuthenticationProxy', 'webNavigation',
+            'webRequest'
+        ];
+
+        // Permissions that can be optional
+        const OPTIONAL_PERMISSIONS = [
+            'activeTab', 'background', 'bookmarks', 'clipboardRead', 'clipboardWrite',
+            'contentSettings', 'contextMenus', 'cookies', 'declarativeContent',
+            'declarativeNetRequestFeedback', 'desktopCapture', 'downloads',
+            'favicon', 'fontSettings', 'geolocation', 'history', 'identity',
+            'idle', 'management', 'notifications', 'pageCapture', 'power',
+            'privacy', 'readingList', 'scripting', 'search', 'sessions',
+            'sidePanel', 'storage', 'system.display', 'tabGroups', 'tabs',
+            'topSites', 'tts', 'unlimitedStorage', 'webNavigation', 'webRequest'
+        ];
+
+        let contentScriptCounter = 0;
+        let webResourceCounter = 0;
+        let commandCounter = 0;
+        let dnrCounter = 0;
+        let ttsCounter = 0;
+
+        // Initialize permission checkboxes
+        function initPermissions() {
+            const container = document.getElementById('permissions-list');
+            PERMISSIONS.forEach(perm => {
+                const div = document.createElement('div');
+                div.className = 'checkbox-item';
+                div.innerHTML = `
+                    <input type="checkbox" id="perm-${perm}" value="${perm}">
+                    <label for="perm-${perm}">${perm}</label>
+                `;
+                container.appendChild(div);
+            });
+
+            const optContainer = document.getElementById('optional-permissions-list');
+            OPTIONAL_PERMISSIONS.forEach(perm => {
+                const div = document.createElement('div');
+                div.className = 'checkbox-item';
+                div.innerHTML = `
+                    <input type="checkbox" id="opt-perm-${perm}" value="${perm}">
+                    <label for="opt-perm-${perm}">${perm}</label>
+                `;
+                optContainer.appendChild(div);
+            });
+        }
+
+        // Toggle collapsible sections
+        function toggleSection(id) {
+            const content = document.getElementById(id + '-content');
+            const title = event.currentTarget;
+            content.classList.toggle('collapsed');
+            title.classList.toggle('collapsed');
+        }
+
+        // Add content script
+        function addContentScript() {
+            const container = document.getElementById('content-scripts-container');
+            const id = contentScriptCounter++;
+            const div = document.createElement('div');
+            div.className = 'array-input';
+            div.innerHTML = `
+                <div class="form-group">
+                    <label>Matches (comma-separated)</label>
+                    <input type="text" id="cs-matches-${id}" placeholder="https://*/*, http://*/*">
+                </div>
+                <div class="form-group">
+                    <label>JavaScript Files (comma-separated)</label>
+                    <input type="text" id="cs-js-${id}" placeholder="content.js, script.js">
+                </div>
+                <div class="form-group">
+                    <label>CSS Files (comma-separated)</label>
+                    <input type="text" id="cs-css-${id}" placeholder="content.css">
+                </div>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>Run At</label>
+                        <select id="cs-run-at-${id}">
+                            <option value="">document_idle (default)</option>
+                            <option value="document_start">document_start</option>
+                            <option value="document_end">document_end</option>
+                            <option value="document_idle">document_idle</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>World</label>
+                        <select id="cs-world-${id}">
+                            <option value="">ISOLATED (default)</option>
+                            <option value="ISOLATED">ISOLATED</option>
+                            <option value="MAIN">MAIN</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label><input type="checkbox" id="cs-all-frames-${id}"> All Frames</label>
+                    <label><input type="checkbox" id="cs-match-about-${id}"> Match About Blank</label>
+                    <label><input type="checkbox" id="cs-match-origin-${id}"> Match Origin as Fallback</label>
+                </div>
+                <button class="btn-remove" onclick="this.parentElement.remove(); updateOutput();">Remove</button>
+            `;
+            container.appendChild(div);
+            attachEventListeners(div);
+        }
+
+        // Add web accessible resource
+        function addWebResource() {
+            const container = document.getElementById('web-resources-container');
+            const id = webResourceCounter++;
+            const div = document.createElement('div');
+            div.className = 'array-input';
+            div.innerHTML = `
+                <div class="form-group">
+                    <label>Resources (comma-separated)</label>
+                    <input type="text" id="war-resources-${id}" placeholder="images/*.png, styles/*.css">
+                </div>
+                <div class="form-group">
+                    <label>Matches (comma-separated)</label>
+                    <input type="text" id="war-matches-${id}" placeholder="https://*/*">
+                </div>
+                <div class="form-group">
+                    <label>Extension IDs (comma-separated, optional)</label>
+                    <input type="text" id="war-ids-${id}" placeholder="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa">
+                </div>
+                <div class="form-group">
+                    <label><input type="checkbox" id="war-dynamic-${id}"> Use Dynamic URL</label>
+                </div>
+                <button class="btn-remove" onclick="this.parentElement.remove(); updateOutput();">Remove</button>
+            `;
+            container.appendChild(div);
+            attachEventListeners(div);
+        }
+
+        // Add command
+        function addCommand() {
+            const container = document.getElementById('commands-container');
+            const id = commandCounter++;
+            const div = document.createElement('div');
+            div.className = 'array-input';
+            div.innerHTML = `
+                <div class="form-group">
+                    <label>Command Name</label>
+                    <input type="text" id="cmd-name-${id}" placeholder="_execute_action or custom_command">
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <input type="text" id="cmd-desc-${id}" placeholder="Command description">
+                </div>
+                <div class="form-group">
+                    <label>Suggested Key (optional)</label>
+                    <input type="text" id="cmd-key-${id}" placeholder="Ctrl+Shift+Y">
+                    <div class="hint">Format: Ctrl+Shift+[A-Z] or Alt+Shift+[A-Z]</div>
+                </div>
+                <button class="btn-remove" onclick="this.parentElement.remove(); updateOutput();">Remove</button>
+            `;
+            container.appendChild(div);
+            attachEventListeners(div);
+        }
+
+        // Add DNR rule resource
+        function addDNRRule() {
+            const container = document.getElementById('dnr-container');
+            const id = dnrCounter++;
+            const div = document.createElement('div');
+            div.className = 'array-input';
+            div.innerHTML = `
+                <div class="form-group">
+                    <label>ID</label>
+                    <input type="text" id="dnr-id-${id}" placeholder="ruleset_1">
+                </div>
+                <div class="form-group">
+                    <label>Path</label>
+                    <input type="text" id="dnr-path-${id}" placeholder="rules.json">
+                </div>
+                <div class="form-group">
+                    <label><input type="checkbox" id="dnr-enabled-${id}"> Enabled by Default</label>
+                </div>
+                <button class="btn-remove" onclick="this.parentElement.remove(); updateOutput();">Remove</button>
+            `;
+            container.appendChild(div);
+            attachEventListeners(div);
+        }
+
+        // Add TTS voice
+        function addTTSVoice() {
+            const container = document.getElementById('tts-container');
+            const id = ttsCounter++;
+            const div = document.createElement('div');
+            div.className = 'array-input';
+            div.innerHTML = `
+                <div class="form-group">
+                    <label>Voice Name</label>
+                    <input type="text" id="tts-name-${id}" placeholder="Alice">
+                </div>
+                <div class="form-group">
+                    <label>Language</label>
+                    <input type="text" id="tts-lang-${id}" placeholder="en-US">
+                </div>
+                <div class="form-group">
+                    <label>Gender</label>
+                    <select id="tts-gender-${id}">
+                        <option value="">None</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Event Types (comma-separated)</label>
+                    <input type="text" id="tts-events-${id}" placeholder="start, end, word">
+                </div>
+                <button class="btn-remove" onclick="this.parentElement.remove(); updateOutput();">Remove</button>
+            `;
+            container.appendChild(div);
+            attachEventListeners(div);
+        }
+
+        // Attach event listeners to dynamic elements
+        function attachEventListeners(element) {
+            element.querySelectorAll('input, select, textarea').forEach(el => {
+                el.addEventListener('input', updateOutput);
+                el.addEventListener('change', updateOutput);
+            });
+        }
+
+        // Get value helper
+        function getValue(id) {
+            const el = document.getElementById(id);
+            return el ? el.value.trim() : '';
+        }
+
+        // Get checkbox value helper
+        function getChecked(id) {
+            const el = document.getElementById(id);
+            return el ? el.checked : false;
+        }
+
+        // Split text by lines or commas
+        function splitValues(text, delimiter = '\n') {
+            return text.split(delimiter).map(s => s.trim()).filter(s => s);
+        }
+
+        // Generate manifest
+        function generateManifest() {
+            const manifest = {
+                manifest_version: 3,
+                name: getValue('name') || 'My Extension',
+                version: getValue('version') || '1.0.0',
+                description: getValue('description') || 'Extension description'
+            };
+
+            // Short name
+            const shortName = getValue('short_name');
+            if (shortName) manifest.short_name = shortName;
+
+            // Version name
+            const versionName = getValue('version_name');
+            if (versionName) manifest.version_name = versionName;
+
+            // Author
+            const author = getValue('author');
+            if (author) manifest.author = author;
+
+            // Homepage
+            const homepage = getValue('homepage_url');
+            if (homepage) manifest.homepage_url = homepage;
+
+            // Icons
+            const icons = {};
+            if (getValue('icon16')) icons['16'] = getValue('icon16');
+            if (getValue('icon32')) icons['32'] = getValue('icon32');
+            if (getValue('icon48')) icons['48'] = getValue('icon48');
+            if (getValue('icon128')) icons['128'] = getValue('icon128');
+            if (Object.keys(icons).length > 0) manifest.icons = icons;
+
+            // Action
+            const actionPopup = getValue('action_popup');
+            const actionTitle = getValue('action_title');
+            const actionIcon = {};
+            if (getValue('action_icon16')) actionIcon['16'] = getValue('action_icon16');
+            if (getValue('action_icon32')) actionIcon['32'] = getValue('action_icon32');
+            if (getValue('action_icon48')) actionIcon['48'] = getValue('action_icon48');
+            if (getValue('action_icon128')) actionIcon['128'] = getValue('action_icon128');
+
+            if (actionPopup || actionTitle || Object.keys(actionIcon).length > 0) {
+                manifest.action = {};
+                if (actionPopup) manifest.action.default_popup = actionPopup;
+                if (actionTitle) manifest.action.default_title = actionTitle;
+                if (Object.keys(actionIcon).length > 0) manifest.action.default_icon = actionIcon;
+            }
+
+            // Background
+            const serviceWorker = getValue('service_worker');
+            if (serviceWorker) {
+                manifest.background = { service_worker: serviceWorker };
+                const bgType = getValue('background_type');
+                if (bgType) manifest.background.type = bgType;
+            }
+
+            // Content Scripts
+            const contentScripts = [];
+            for (let i = 0; i < contentScriptCounter; i++) {
+                const matches = getValue(`cs-matches-${i}`);
+                if (!matches) continue;
+
+                const cs = {
+                    matches: matches.split(',').map(s => s.trim()).filter(s => s)
+                };
+
+                const js = getValue(`cs-js-${i}`);
+                if (js) cs.js = js.split(',').map(s => s.trim()).filter(s => s);
+
+                const css = getValue(`cs-css-${i}`);
+                if (css) cs.css = css.split(',').map(s => s.trim()).filter(s => s);
+
+                const runAt = getValue(`cs-run-at-${i}`);
+                if (runAt) cs.run_at = runAt;
+
+                const world = getValue(`cs-world-${i}`);
+                if (world) cs.world = world;
+
+                if (getChecked(`cs-all-frames-${i}`)) cs.all_frames = true;
+                if (getChecked(`cs-match-about-${i}`)) cs.match_about_blank = true;
+                if (getChecked(`cs-match-origin-${i}`)) cs.match_origin_as_fallback = true;
+
+                contentScripts.push(cs);
+            }
+            if (contentScripts.length > 0) manifest.content_scripts = contentScripts;
+
+            // Permissions
+            const permissions = [];
+            document.querySelectorAll('#permissions-list input[type="checkbox"]:checked').forEach(cb => {
+                permissions.push(cb.value);
+            });
+            if (permissions.length > 0) manifest.permissions = permissions;
+
+            // Optional Permissions
+            const optPermissions = [];
+            document.querySelectorAll('#optional-permissions-list input[type="checkbox"]:checked').forEach(cb => {
+                optPermissions.push(cb.value);
+            });
+            if (optPermissions.length > 0) manifest.optional_permissions = optPermissions;
+
+            // Host Permissions
+            const hostPerms = splitValues(getValue('host_permissions'));
+            if (hostPerms.length > 0) manifest.host_permissions = hostPerms;
+
+            // Optional Host Permissions
+            const optHostPerms = splitValues(getValue('optional_host_permissions'));
+            if (optHostPerms.length > 0) manifest.optional_host_permissions = optHostPerms;
+
+            // Options Page (legacy)
+            const optionsPage = getValue('options_page');
+            if (optionsPage) manifest.options_page = optionsPage;
+
+            // Options UI
+            const optionsUIPage = getValue('options_ui_page');
+            if (optionsUIPage) {
+                manifest.options_ui = { page: optionsUIPage };
+                if (getChecked('options_ui_open_in_tab')) {
+                    manifest.options_ui.open_in_tab = true;
+                }
+            }
+
+            // Side Panel
+            const sidePanelPath = getValue('side_panel_path');
+            if (sidePanelPath) {
+                manifest.side_panel = { default_path: sidePanelPath };
+            }
+
+            // DevTools
+            const devtoolsPage = getValue('devtools_page');
+            if (devtoolsPage) manifest.devtools_page = devtoolsPage;
+
+            // Web Accessible Resources
+            const webResources = [];
+            for (let i = 0; i < webResourceCounter; i++) {
+                const resources = getValue(`war-resources-${i}`);
+                const matches = getValue(`war-matches-${i}`);
+                if (!resources || !matches) continue;
+
+                const war = {
+                    resources: resources.split(',').map(s => s.trim()).filter(s => s),
+                    matches: matches.split(',').map(s => s.trim()).filter(s => s)
+                };
+
+                const ids = getValue(`war-ids-${i}`);
+                if (ids) war.extension_ids = ids.split(',').map(s => s.trim()).filter(s => s);
+
+                if (getChecked(`war-dynamic-${i}`)) war.use_dynamic_url = true;
+
+                webResources.push(war);
+            }
+            if (webResources.length > 0) manifest.web_accessible_resources = webResources;
+
+            // Omnibox
+            const omniboxKeyword = getValue('omnibox_keyword');
+            if (omniboxKeyword) {
+                manifest.omnibox = { keyword: omniboxKeyword };
+            }
+
+            // Commands
+            const commands = {};
+            for (let i = 0; i < commandCounter; i++) {
+                const name = getValue(`cmd-name-${i}`);
+                const desc = getValue(`cmd-desc-${i}`);
+                if (!name || !desc) continue;
+
+                commands[name] = { description: desc };
+                const key = getValue(`cmd-key-${i}`);
+                if (key) commands[name].suggested_key = { default: key };
+            }
+            if (Object.keys(commands).length > 0) manifest.commands = commands;
+
+            // Declarative Net Request
+            const dnrRules = [];
+            for (let i = 0; i < dnrCounter; i++) {
+                const id = getValue(`dnr-id-${i}`);
+                const path = getValue(`dnr-path-${i}`);
+                if (!id || !path) continue;
+
+                const rule = { id, path };
+                if (getChecked(`dnr-enabled-${i}`)) rule.enabled = true;
+                dnrRules.push(rule);
+            }
+            if (dnrRules.length > 0) {
+                manifest.declarative_net_request = { rule_resources: dnrRules };
+            }
+
+            // Externally Connectable
+            const extMatches = splitValues(getValue('externally_matches'));
+            const extIds = splitValues(getValue('externally_ids'));
+            if (extMatches.length > 0 || extIds.length > 0 || getChecked('externally_tls')) {
+                manifest.externally_connectable = {};
+                if (extMatches.length > 0) manifest.externally_connectable.matches = extMatches;
+                if (extIds.length > 0) manifest.externally_connectable.ids = extIds;
+                if (getChecked('externally_tls')) manifest.externally_connectable.accepts_tls_channel_id = true;
+            }
+
+            // Chrome URL Overrides
+            const overrides = {};
+            if (getValue('override_newtab')) overrides.newtab = getValue('override_newtab');
+            if (getValue('override_bookmarks')) overrides.bookmarks = getValue('override_bookmarks');
+            if (getValue('override_history')) overrides.history = getValue('override_history');
+            if (Object.keys(overrides).length > 0) manifest.chrome_url_overrides = overrides;
+
+            // Content Security Policy
+            const cspExt = getValue('csp_extension');
+            const cspSandbox = getValue('csp_sandbox');
+            if (cspExt || cspSandbox) {
+                manifest.content_security_policy = {};
+                if (cspExt) manifest.content_security_policy.extension_pages = cspExt;
+                if (cspSandbox) manifest.content_security_policy.sandbox = cspSandbox;
+            }
+
+            // Sandbox
+            const sandboxPages = splitValues(getValue('sandbox_pages'));
+            if (sandboxPages.length > 0) {
+                manifest.sandbox = { pages: sandboxPages };
+            }
+
+            // Storage
+            const managedSchema = getValue('managed_schema');
+            if (managedSchema) {
+                manifest.storage = { managed_schema: managedSchema };
+            }
+
+            // OAuth2
+            const oauthClientId = getValue('oauth_client_id');
+            const oauthScopes = splitValues(getValue('oauth_scopes'));
+            if (oauthClientId || oauthScopes.length > 0) {
+                manifest.oauth2 = {};
+                if (oauthClientId) manifest.oauth2.client_id = oauthClientId;
+                if (oauthScopes.length > 0) manifest.oauth2.scopes = oauthScopes;
+            }
+
+            // Cross-Origin Policies
+            const coep = getValue('coep');
+            if (coep) {
+                manifest.cross_origin_embedder_policy = { value: coep };
+            }
+
+            const coop = getValue('coop');
+            if (coop) {
+                manifest.cross_origin_opener_policy = { value: coop };
+            }
+
+            // Advanced
+            const minVersion = getValue('minimum_chrome_version');
+            if (minVersion) manifest.minimum_chrome_version = minVersion;
+
+            const incognito = getValue('incognito');
+            if (incognito) manifest.incognito = incognito;
+
+            const defaultLocale = getValue('default_locale');
+            if (defaultLocale) manifest.default_locale = defaultLocale;
+
+            const updateUrl = getValue('update_url');
+            if (updateUrl) manifest.update_url = updateUrl;
+
+            const key = getValue('key');
+            if (key) manifest.key = key;
+
+            if (getChecked('offline_enabled')) manifest.offline_enabled = true;
+
+            // TTS Engine
+            const ttsVoices = [];
+            for (let i = 0; i < ttsCounter; i++) {
+                const name = getValue(`tts-name-${i}`);
+                const lang = getValue(`tts-lang-${i}`);
+                if (!name) continue;
+
+                const voice = { voice_name: name };
+                if (lang) voice.lang = lang;
+
+                const gender = getValue(`tts-gender-${i}`);
+                if (gender) voice.gender = gender;
+
+                const events = getValue(`tts-events-${i}`);
+                if (events) voice.event_types = events.split(',').map(s => s.trim()).filter(s => s);
+
+                ttsVoices.push(voice);
+            }
+            if (ttsVoices.length > 0) {
+                manifest.tts_engine = { voices: ttsVoices };
+            }
+
+            // Requirements
+            if (getChecked('require_3d')) {
+                manifest.requirements = {
+                    '3D': { features: ['webgl'] }
+                };
+            }
+
+            return manifest;
+        }
+
+        // Update output
+        function updateOutput() {
+            const manifest = generateManifest();
+            const output = document.getElementById('output');
+            const jsonStr = JSON.stringify(manifest, null, 2);
+            const html = Prism.highlight(jsonStr, Prism.languages.json, 'json');
+            output.innerHTML = html;
+        }
+
+        // Download manifest
+        function downloadManifest() {
+            const manifest = generateManifest();
+            const blob = new Blob([JSON.stringify(manifest, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'manifest.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast('Downloaded manifest.json');
+        }
+
+        // Copy to clipboard
+        function copyToClipboard() {
+            const output = document.getElementById('output');
+            navigator.clipboard.writeText(output.textContent).then(() => {
+                showToast('Copied to clipboard!');
+            });
+        }
+
+        // Show toast notification
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
+        }
+
+        // Initialize
+        initPermissions();
+
+        // Add event listeners to all inputs
+        document.querySelectorAll('input, textarea, select').forEach(element => {
+            element.addEventListener('input', updateOutput);
+            element.addEventListener('change', updateOutput);
+        });
+
+        // Initial update
+        updateOutput();
+    </script>
+</body>
+
+</html>
