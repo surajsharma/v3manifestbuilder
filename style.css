@@ -12,7 +12,7 @@
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 80vw;
             margin: 0 auto;
             padding: 20px;
         }
@@ -40,7 +40,7 @@
             display: grid;
             grid-template-columns: 1fr 500px;
             gap: 30px;
-            height: 75vh;
+            height: 80vh;
             overflow: scroll;
         }
 
@@ -48,7 +48,7 @@
             background: white;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            max-height: calc(100vh - 255px);
+            max-height: calc(98vh - 255px);
             overflow:scroll;
         }
 
@@ -114,7 +114,7 @@
 
         .output {
             position: sticky;
-            max-height: calc(100vh - 255px);
+            max-height: calc(98vh - 255px);
             display: flex;
             flex-direction: column;
         }
@@ -347,6 +347,8 @@
             padding: 15px;
             width: 100%;
             margin-top: auto;
+            position: absolute;
+            bottom: 0;
         }
 
         footer p {
