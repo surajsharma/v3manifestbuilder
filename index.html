@@ -803,12 +803,8 @@
       function initDarkmode() {
         if (typeof Darkmode !== "undefined") {
           const options = {
-            buttonColorDark: "#1a0500",
-            buttonColorLight: "#ffedeb",
-            bottom: "32px",
-            right: "32px",
-            time: "0.3s",
-            saveInCookies: true,
+            buttonLight: "#1a0500",
+            buttonDark: "#ffedeb",
             label: "🌓",
           };
           new Darkmode(options).attach();
