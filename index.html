@@ -1,523 +1,824 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
+    <meta
+      http-equiv="Cache-Control"
+      content="no-cache, no-store, must-revalidate"
+    />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
 
     <!-- Primary SEO Tags -->
     <title>V3 Manifest Builder - Chrome Extension Manifest Generator</title>
-    <meta name="title" content="V3 Manifest Builder - Chrome Extension Manifest Generator">
-    <meta name="description"
-        content="Free online tool to create and build Chrome Extension Manifest V3 files. Generate valid manifest.json for your browser extensions easily.">
-    <meta name="keywords" content="chrome extension, manifest v3, manifest builder, extension developer, manifest.json">
-    <meta name="robots" content="index, follow">
-    <meta name="language" content="English">
-    <meta name="author" content="evenzero">
+    <meta
+      name="title"
+      content="V3 Manifest Builder - Chrome Extension Manifest Generator"
+    />
+    <meta
+      name="description"
+      content="Free online tool to create and build Chrome Extension Manifest V3 files. Generate valid manifest.json for your browser extensions easily."
+    />
+    <meta
+      name="keywords"
+      content="chrome extension, manifest v3, manifest builder, extension developer, manifest.json"
+    />
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="English" />
+    <meta name="author" content="evenzero" />
 
     <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://v3manifestbuilder.vercel.app/">
-    <meta property="og:title" content="V3 Manifest Builder - Browser Extension Manifest Generator">
-    <meta property="og:description" content="Free online tool to create and build Browser Extension Manifest V3 files.">
-    <meta property="og:image" content="https://v3manifestbuilder.vercel.app/og-image.png">
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://v3manifestbuilder.vercel.app/" />
+    <meta
+      property="og:title"
+      content="V3 Manifest Builder - Browser Extension Manifest Generator"
+    />
+    <meta
+      property="og:description"
+      content="Free online tool to create and build Browser Extension Manifest V3 files."
+    />
+    <meta
+      property="og:image"
+      content="https://v3manifestbuilder.vercel.app/og-image.png"
+    />
 
     <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://v3manifestbuilder.vercel.app/">
-    <meta property="twitter:title" content="V3 Manifest Builder">
-    <meta property="twitter:description"
-        content="Free online tool to create and build Chrome Extension Manifest V3 files.">
-    <meta property="twitter:image" content="https://v3manifestbuilder.vercel.app/og-image.png">
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta
+      property="twitter:url"
+      content="https://v3manifestbuilder.vercel.app/"
+    />
+    <meta property="twitter:title" content="V3 Manifest Builder" />
+    <meta
+      property="twitter:description"
+      content="Free online tool to create and build Chrome Extension Manifest V3 files."
+    />
+    <meta
+      property="twitter:image"
+      content="https://v3manifestbuilder.vercel.app/og-image.png"
+    />
 
-    <meta name="google-site-verification" content="85wx3u0WeHjECFnbBQMbWheXUfbijfBEHy5dOnk7FzM" />
+    <meta
+      name="google-site-verification"
+      content="85wx3u0WeHjECFnbBQMbWheXUfbijfBEHy5dOnk7FzM"
+    />
+    <link
+      rel="icon"
+      href="https://raw.githubusercontent.com/inversepolarity/ip/refs/heads/main/favicon.ico"
+      type="image/x-icon"
+    />
+
     <!-- Canonical URL -->
-    <link rel="canonical" href="https://v3manifestbuilder.vercel.app/">
-
-    <!-- Mobile blocking - MUST load first, synchronously -->
+    <link rel="canonical" href="https://v3manifestbuilder.vercel.app/" />
 
     <script type="application/ld+json">
-    {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "V3 Manifest Builder",
-    "description": "Free online tool to create and build Chrome Extension Manifest V3 files",
-    "url": "https://your-site.vercel.app",
-    "applicationCategory": "DeveloperApplication",
-    "operatingSystem": "Any",
-    "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "V3 Manifest Builder",
+        "description": "Free online tool to create and build Chrome Extension Manifest V3 files",
+        "url": "https://your-site.vercel.app",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Any",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
         }
-    }
+      }
     </script>
 
     <!-- Include Prism.js -->
-    <link href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism.min.css" rel="stylesheet">
-    <link rel="icon" href="https://raw.githubusercontent.com/inversepolarity/ip/refs/heads/main/favicon.ico"
-        type="image/x-icon">
-
+    <link href="/prism.css" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
     <title>V3 Manifest Builder</title>
-    <link rel="stylesheet" href="style.css">
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="container">
-        <header>
-            <h1>⚡ V3 Manifest Builder</h1>
-            <p class="subtitle">Complete Cross-browser Extension manifest.json (v3) generator with all official fields
-            </p>
-        </header>
+      <header>
+        <h1>⚡ V3 Manifest Builder</h1>
+        <p class="subtitle">
+          Complete Cross-browser Extension manifest.json (v3) generator with all
+          official fields
+        </p>
+      </header>
 
-        <div class="grid">
-            <div class="panel">
-                <div class="inner-padding">
-                    <h2>Configuration</h2>
+      <div class="grid">
+        <div class="panel">
+          <div class="inner-padding">
+            <h2>Configuration</h2>
 
-                    <!-- BASIC INFORMATION -->
-                    <div class="section-title">Basic Information</div>
+            <!-- BASIC INFORMATION -->
+            <div class="section-title">Basic Information</div>
 
-                    <div class="form-group">
-                        <label for="name" class="required">Name</label>
-                        <input type="text" id="name" placeholder="My Awesome Extension">
-                        <div class="hint">Maximum 45 characters for Chrome Web Store</div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="version" class="required">Version</label>
-                        <input type="text" id="version" value="1.0.0" placeholder="1.0.0">
-                        <div class="hint">Format: 1-4 dot-separated integers (e.g., 1.0.0.1)</div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="description" class="required">Description</label>
-                        <textarea id="description" placeholder="A brief description of your extension"></textarea>
-                        <div class="hint">Maximum 132 characters</div>
-                    </div>
-
-                    <div class="grid-2">
-                        <div class="form-group">
-                            <label for="short_name">Short Name</label>
-                            <input type="text" id="short_name" placeholder="My Ext">
-                            <div class="hint">Max 12 characters</div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="version_name">Version Name</label>
-                            <input type="text" id="version_name" placeholder="1.0 beta">
-                            <div class="hint">Display version</div>
-                        </div>
-                    </div>
-
-                    <div class="grid-2">
-                        <div class="form-group">
-                            <label for="author">Author</label>
-                            <input type="text" id="author" placeholder="Your Name">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="homepage_url">Homepage URL</label>
-                            <input type="url" id="homepage_url" placeholder="https://example.com">
-                        </div>
-                    </div>
-
-                    <!-- ICONS -->
-                    <div class="section-title">Icons</div>
-                    <div class="form-group">
-                        <div class="icon-inputs">
-                            <label>16px:</label>
-                            <input type="text" id="icon16" placeholder="icons/icon16.png">
-
-                            <label>32px:</label>
-                            <input type="text" id="icon32" placeholder="icons/icon32.png">
-
-                            <label>48px:</label>
-                            <input type="text" id="icon48" placeholder="icons/icon48.png">
-
-                            <label>128px:</label>
-                            <input type="text" id="icon128" placeholder="icons/icon128.png">
-                        </div>
-                    </div>
-
-                    <!-- ACTION (BROWSER ACTION) -->
-                    <div class="section-title collapsible" onclick="toggleSection('action')">Browser Action</div>
-                    <div id="action-content" class="collapsible-content">
-                        <div class="form-group">
-                            <label for="action_popup">Default Popup</label>
-                            <input type="text" id="action_popup" placeholder="popup.html">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="action_title">Default Title</label>
-                            <input type="text" id="action_title" placeholder="Extension Name">
-                        </div>
-
-                        <div class="subsection-title">Action Icon</div>
-                        <div class="icon-inputs">
-                            <label>16px:</label>
-                            <input type="text" id="action_icon16" placeholder="icons/icon16.png">
-
-                            <label>32px:</label>
-                            <input type="text" id="action_icon32" placeholder="icons/icon32.png">
-
-                            <label>48px:</label>
-                            <input type="text" id="action_icon48" placeholder="icons/icon48.png">
-
-                            <label>128px:</label>
-                            <input type="text" id="action_icon128" placeholder="icons/icon128.png">
-                        </div>
-                    </div>
-
-                    <!-- BACKGROUND -->
-                    <div class="section-title collapsible" onclick="toggleSection('background')">Background Service
-                        Worker
-                    </div>
-                    <div id="background-content" class="collapsible-content">
-                        <div class="form-group">
-                            <label for="service_worker">Service Worker</label>
-                            <input type="text" id="service_worker" placeholder="background.js">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="background_type">Type</label>
-                            <select id="background_type">
-                                <option value="">Classic (default)</option>
-                                <option value="module">ES Module</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- CONTENT SCRIPTS -->
-                    <div class="section-title collapsible" onclick="toggleSection('content')">Content Scripts</div>
-                    <div id="content-content" class="collapsible-content">
-                        <div id="content-scripts-container"></div>
-                        <button class="btn-add" onclick="addContentScript()">+ Add Content Script</button>
-                    </div>
-
-                    <!-- PERMISSIONS -->
-                    <div class="section-title collapsible" onclick="toggleSection('permissions')">Permissions</div>
-                    <div id="permissions-content" class="collapsible-content">
-                        <div class="form-group">
-                            <div class="checkbox-grid" id="permissions-list"></div>
-                        </div>
-                    </div>
-
-                    <!-- OPTIONAL PERMISSIONS -->
-                    <div class="section-title collapsible" onclick="toggleSection('optional-permissions')">Optional
-                        Permissions</div>
-                    <div id="optional-permissions-content" class="collapsible-content">
-                        <div class="form-group">
-                            <div class="checkbox-grid" id="optional-permissions-list"></div>
-                        </div>
-                    </div>
-
-                    <!-- HOST PERMISSIONS -->
-                    <div class="section-title collapsible" onclick="toggleSection('host')">Host Permissions</div>
-                    <div id="host-content" class="collapsible-content">
-                        <div class="form-group">
-                            <label>Host Permissions</label>
-                            <textarea id="host_permissions"
-                                placeholder="https://*.google.com/*&#10;https://*.github.com/*"></textarea>
-                            <div class="hint">One URL pattern per line</div>
-                        </div>
-                    </div>
-
-                    <!-- OPTIONAL HOST PERMISSIONS -->
-                    <div class="section-title collapsible" onclick="toggleSection('optional-host')">Optional Host
-                        Permissions</div>
-                    <div id="optional-host-content" class="collapsible-content">
-                        <div class="form-group">
-                            <label>Optional Host Permissions</label>
-                            <textarea id="optional_host_permissions" placeholder="https://*/*"></textarea>
-                            <div class="hint">One URL pattern per line</div>
-                        </div>
-                    </div>
-
-                    <!-- OPTIONS PAGE -->
-                    <div class="section-title collapsible" onclick="toggleSection('options')">Options Page</div>
-                    <div id="options-content" class="collapsible-content">
-                        <div class="form-group">
-                            <label for="options_page">Options Page (Legacy)</label>
-                            <input type="text" id="options_page" placeholder="options.html">
-                        </div>
-
-                        <div class="subsection-title">Options UI (Recommended)</div>
-
-                        <div class="form-group">
-                            <label for="options_ui_page">Page</label>
-                            <input type="text" id="options_ui_page" placeholder="options.html">
-                        </div>
-
-                        <div class="form-group">
-                            <label>
-                                <input type="checkbox" id="options_ui_open_in_tab">
-                                Open in new tab
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- SIDE PANEL -->
-                    <div class="section-title collapsible" onclick="toggleSection('sidepanel')">Side Panel</div>
-                    <div id="sidepanel-content" class="collapsible-content">
-                        <div class="form-group">
-                            <label for="side_panel_path">Default Path</label>
-                            <input type="text" id="side_panel_path" placeholder="sidepanel.html">
-                        </div>
-                    </div>
-
-                    <!-- DEVTOOLS -->
-                    <div class="section-title collapsible" onclick="toggleSection('devtools')">DevTools</div>
-                    <div id="devtools-content" class="collapsible-content">
-                        <div class="form-group">
-                            <label for="devtools_page">DevTools Page</label>
-                            <input type="text" id="devtools_page" placeholder="devtools.html">
-                        </div>
-                    </div>
-
-                    <!-- WEB ACCESSIBLE RESOURCES -->
-                    <div class="section-title collapsible" onclick="toggleSection('web-resources')">Web Accessible
-                        Resources
-                    </div>
-                    <div id="web-resources-content" class="collapsible-content">
-                        <div id="web-resources-container"></div>
-                        <button class="btn-add" onclick="addWebResource()">+ Add Resource Group</button>
-                    </div>
-
-                    <!-- OMNIBOX -->
-                    <div class="section-title collapsible" onclick="toggleSection('omnibox')">Omnibox</div>
-                    <div id="omnibox-content" class="collapsible-content">
-                        <div class="form-group">
-                            <label for="omnibox_keyword">Keyword</label>
-                            <input type="text" id="omnibox_keyword" placeholder="myextension">
-                            <div class="hint">Keyword to trigger your extension in address bar</div>
-                        </div>
-                    </div>
-
-                    <!-- COMMANDS -->
-                    <div class="section-title collapsible" onclick="toggleSection('commands')">Commands (Keyboard
-                        Shortcuts)
-                    </div>
-                    <div id="commands-content" class="collapsible-content">
-                        <div id="commands-container"></div>
-                        <button class="btn-add" onclick="addCommand()">+ Add Command</button>
-                    </div>
-
-                    <!-- DECLARATIVE NET REQUEST -->
-                    <div class="section-title collapsible" onclick="toggleSection('dnr')">Declarative Net Request</div>
-                    <div id="dnr-content" class="collapsible-content">
-                        <div id="dnr-container"></div>
-                        <button class="btn-add" onclick="addDNRRule()">+ Add Rule Resource</button>
-                    </div>
-
-                    <!-- EXTERNALLY CONNECTABLE -->
-                    <div class="section-title collapsible" onclick="toggleSection('externally')">Externally Connectable
-                    </div>
-                    <div id="externally-content" class="collapsible-content">
-                        <div class="form-group">
-                            <label>Matches</label>
-                            <textarea id="externally_matches" placeholder="https://example.com/*"></textarea>
-                            <div class="hint">One URL pattern per line</div>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Extension IDs</label>
-                            <textarea id="externally_ids" placeholder="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"></textarea>
-                            <div class="hint">One extension ID per line</div>
-                        </div>
-
-                        <div class="form-group">
-                            <label>
-                                <input type="checkbox" id="externally_tls">
-                                Accepts TLS Channel ID
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- CHROME URL OVERRIDES -->
-                    <div class="section-title collapsible" onclick="toggleSection('overrides')">Chrome URL Overrides
-                    </div>
-                    <div id="overrides-content" class="collapsible-content">
-                        <div class="form-group">
-                            <label for="override_newtab">New Tab</label>
-                            <input type="text" id="override_newtab" placeholder="newtab.html">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="override_bookmarks">Bookmarks</label>
-                            <input type="text" id="override_bookmarks" placeholder="bookmarks.html">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="override_history">History</label>
-                            <input type="text" id="override_history" placeholder="history.html">
-                        </div>
-                    </div>
-
-                    <!-- CONTENT SECURITY POLICY -->
-                    <div class="section-title collapsible" onclick="toggleSection('csp')">Content Security Policy</div>
-                    <div id="csp-content" class="collapsible-content">
-                        <div class="form-group">
-                            <label for="csp_extension">Extension Pages</label>
-                            <textarea id="csp_extension" placeholder="script-src 'self'; object-src 'self'"></textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="csp_sandbox">Sandbox</label>
-                            <textarea id="csp_sandbox"
-                                placeholder="sandbox allow-scripts; script-src 'self'"></textarea>
-                        </div>
-                    </div>
-
-                    <!-- SANDBOX -->
-                    <div class="section-title collapsible" onclick="toggleSection('sandbox')">Sandbox</div>
-                    <div id="sandbox-content" class="collapsible-content">
-                        <div class="form-group">
-                            <label>Sandboxed Pages</label>
-                            <textarea id="sandbox_pages" placeholder="sandbox.html"></textarea>
-                            <div class="hint">One page path per line</div>
-                        </div>
-                    </div>
-
-                    <!-- STORAGE -->
-                    <div class="section-title collapsible" onclick="toggleSection('storage')">Storage</div>
-                    <div id="storage-content" class="collapsible-content">
-                        <div class="form-group">
-                            <label for="managed_schema">Managed Schema</label>
-                            <input type="text" id="managed_schema" placeholder="schema.json">
-                        </div>
-                    </div>
-
-                    <!-- OAUTH2 -->
-                    <div class="section-title collapsible" onclick="toggleSection('oauth')">OAuth2</div>
-                    <div id="oauth-content" class="collapsible-content">
-                        <div class="form-group">
-                            <label for="oauth_client_id">Client ID</label>
-                            <input type="text" id="oauth_client_id" placeholder="123456789.apps.googleusercontent.com">
-                        </div>
-
-                        <div class="form-group">
-                            <label>Scopes</label>
-                            <textarea id="oauth_scopes"
-                                placeholder="https://www.googleapis.com/auth/userinfo.email"></textarea>
-                            <div class="hint">One scope per line</div>
-                        </div>
-                    </div>
-
-                    <!-- CROSS ORIGIN POLICIES -->
-                    <div class="section-title collapsible" onclick="toggleSection('cors')">Cross-Origin Policies</div>
-                    <div id="cors-content" class="collapsible-content">
-                        <div class="form-group">
-                            <label for="coep">Cross-Origin-Embedder-Policy</label>
-                            <select id="coep">
-                                <option value="">None</option>
-                                <option value="require-corp">require-corp</option>
-                                <option value="credentialless">credentialless</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="coop">Cross-Origin-Opener-Policy</label>
-                            <select id="coop">
-                                <option value="">None</option>
-                                <option value="same-origin">same-origin</option>
-                                <option value="same-origin-allow-popups">same-origin-allow-popups</option>
-                                <option value="restrict-properties">restrict-properties</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- ADVANCED SETTINGS -->
-                    <div class="section-title collapsible" onclick="toggleSection('advanced')">Advanced Settings</div>
-                    <div id="advanced-content" class="collapsible-content">
-                        <div class="form-group">
-                            <label for="minimum_chrome_version">Minimum Chrome Version</label>
-                            <input type="text" id="minimum_chrome_version" placeholder="88">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="incognito">Incognito Behavior</label>
-                            <select id="incognito">
-                                <option value="">Default (spanning)</option>
-                                <option value="spanning">Spanning</option>
-                                <option value="split">Split</option>
-                                <option value="not_allowed">Not Allowed</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="default_locale">Default Locale</label>
-                            <input type="text" id="default_locale" placeholder="en">
-                            <div class="hint">Required if _locales directory exists</div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="update_url">Update URL</label>
-                            <input type="url" id="update_url" placeholder="https://example.com/updates.xml">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="key">Key</label>
-                            <textarea id="key" placeholder="MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA..."></textarea>
-                            <div class="hint">Public key for consistent extension ID</div>
-                        </div>
-
-                        <div class="form-group">
-                            <label>
-                                <input type="checkbox" id="offline_enabled">
-                                Offline Enabled
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- TTS ENGINE -->
-                    <div class="section-title collapsible" onclick="toggleSection('tts')">Text-to-Speech Engine</div>
-                    <div id="tts-content" class="collapsible-content">
-                        <div id="tts-container"></div>
-                        <button class="btn-add" onclick="addTTSVoice()">+ Add Voice</button>
-                    </div>
-
-                    <!-- REQUIREMENTS -->
-                    <div class="section-title collapsible" onclick="toggleSection('requirements')">Requirements</div>
-                    <div id="requirements-content" class="collapsible-content">
-                        <div class="form-group">
-                            <label>
-                                <input type="checkbox" id="require_3d">
-                                Require 3D Graphics (WebGL)
-                            </label>
-                        </div>
-                    </div>
-                </div>
+            <div class="form-group">
+              <label for="name" class="required">Name</label>
+              <input type="text" id="name" placeholder="My Awesome Extension" />
+              <div class="hint">Maximum 45 characters for Chrome Web Store</div>
             </div>
 
-            <!-- OUTPUT PANEL -->
-            <div class="panel output inner-padding">
-                <h2>Generated manifest.json</h2>
-                <pre><code id="output" class="language-json">{
+            <div class="form-group">
+              <label for="version" class="required">Version</label>
+              <input
+                type="text"
+                id="version"
+                value="1.0.0"
+                placeholder="1.0.0"
+              />
+              <div class="hint">
+                Format: 1-4 dot-separated integers (e.g., 1.0.0.1)
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="description" class="required">Description</label>
+              <textarea
+                id="description"
+                placeholder="A brief description of your extension"
+              ></textarea>
+              <div class="hint">Maximum 132 characters</div>
+            </div>
+
+            <div class="grid-2">
+              <div class="form-group">
+                <label for="short_name">Short Name</label>
+                <input type="text" id="short_name" placeholder="My Ext" />
+                <div class="hint">Max 12 characters</div>
+              </div>
+
+              <div class="form-group">
+                <label for="version_name">Version Name</label>
+                <input type="text" id="version_name" placeholder="1.0 beta" />
+                <div class="hint">Display version</div>
+              </div>
+            </div>
+
+            <div class="grid-2">
+              <div class="form-group">
+                <label for="author">Author</label>
+                <input type="text" id="author" placeholder="Your Name" />
+              </div>
+
+              <div class="form-group">
+                <label for="homepage_url">Homepage URL</label>
+                <input
+                  type="url"
+                  id="homepage_url"
+                  placeholder="https://example.com"
+                />
+              </div>
+            </div>
+
+            <!-- ICONS -->
+            <div class="section-title">Icons</div>
+            <div class="form-group">
+              <div class="icon-inputs">
+                <label>16px:</label>
+                <input type="text" id="icon16" placeholder="icons/icon16.png" />
+
+                <label>32px:</label>
+                <input type="text" id="icon32" placeholder="icons/icon32.png" />
+
+                <label>48px:</label>
+                <input type="text" id="icon48" placeholder="icons/icon48.png" />
+
+                <label>128px:</label>
+                <input
+                  type="text"
+                  id="icon128"
+                  placeholder="icons/icon128.png"
+                />
+              </div>
+            </div>
+
+            <!-- ACTION (BROWSER ACTION) -->
+            <div
+              class="section-title collapsible"
+              onclick="toggleSection('action')"
+            >
+              Browser Action
+            </div>
+            <div id="action-content" class="collapsible-content">
+              <div class="form-group">
+                <label for="action_popup">Default Popup</label>
+                <input type="text" id="action_popup" placeholder="popup.html" />
+              </div>
+
+              <div class="form-group">
+                <label for="action_title">Default Title</label>
+                <input
+                  type="text"
+                  id="action_title"
+                  placeholder="Extension Name"
+                />
+              </div>
+
+              <div class="subsection-title">Action Icon</div>
+              <div class="icon-inputs">
+                <label>16px:</label>
+                <input
+                  type="text"
+                  id="action_icon16"
+                  placeholder="icons/icon16.png"
+                />
+
+                <label>32px:</label>
+                <input
+                  type="text"
+                  id="action_icon32"
+                  placeholder="icons/icon32.png"
+                />
+
+                <label>48px:</label>
+                <input
+                  type="text"
+                  id="action_icon48"
+                  placeholder="icons/icon48.png"
+                />
+
+                <label>128px:</label>
+                <input
+                  type="text"
+                  id="action_icon128"
+                  placeholder="icons/icon128.png"
+                />
+              </div>
+            </div>
+
+            <!-- BACKGROUND -->
+            <div
+              class="section-title collapsible"
+              onclick="toggleSection('background')"
+            >
+              Background Service Worker
+            </div>
+            <div id="background-content" class="collapsible-content">
+              <div class="form-group">
+                <label for="service_worker">Service Worker</label>
+                <input
+                  type="text"
+                  id="service_worker"
+                  placeholder="background.js"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="background_type">Type</label>
+                <select id="background_type">
+                  <option value="">Classic (default)</option>
+                  <option value="module">ES Module</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- CONTENT SCRIPTS -->
+            <div
+              class="section-title collapsible"
+              onclick="toggleSection('content')"
+            >
+              Content Scripts
+            </div>
+            <div id="content-content" class="collapsible-content">
+              <div id="content-scripts-container"></div>
+              <button class="btn-add" onclick="addContentScript()">
+                + Add Content Script
+              </button>
+            </div>
+
+            <!-- PERMISSIONS -->
+            <div
+              class="section-title collapsible"
+              onclick="toggleSection('permissions')"
+            >
+              Permissions
+            </div>
+            <div id="permissions-content" class="collapsible-content">
+              <div class="form-group">
+                <div class="checkbox-grid" id="permissions-list"></div>
+              </div>
+            </div>
+
+            <!-- OPTIONAL PERMISSIONS -->
+            <div
+              class="section-title collapsible"
+              onclick="toggleSection('optional-permissions')"
+            >
+              Optional Permissions
+            </div>
+            <div id="optional-permissions-content" class="collapsible-content">
+              <div class="form-group">
+                <div class="checkbox-grid" id="optional-permissions-list"></div>
+              </div>
+            </div>
+
+            <!-- HOST PERMISSIONS -->
+            <div
+              class="section-title collapsible"
+              onclick="toggleSection('host')"
+            >
+              Host Permissions
+            </div>
+            <div id="host-content" class="collapsible-content">
+              <div class="form-group">
+                <label>Host Permissions</label>
+                <textarea
+                  id="host_permissions"
+                  placeholder="https://*.google.com/*&#10;https://*.github.com/*"
+                ></textarea>
+                <div class="hint">One URL pattern per line</div>
+              </div>
+            </div>
+
+            <!-- OPTIONAL HOST PERMISSIONS -->
+            <div
+              class="section-title collapsible"
+              onclick="toggleSection('optional-host')"
+            >
+              Optional Host Permissions
+            </div>
+            <div id="optional-host-content" class="collapsible-content">
+              <div class="form-group">
+                <label>Optional Host Permissions</label>
+                <textarea
+                  id="optional_host_permissions"
+                  placeholder="https://*/*"
+                ></textarea>
+                <div class="hint">One URL pattern per line</div>
+              </div>
+            </div>
+
+            <!-- OPTIONS PAGE -->
+            <div
+              class="section-title collapsible"
+              onclick="toggleSection('options')"
+            >
+              Options Page
+            </div>
+            <div id="options-content" class="collapsible-content">
+              <div class="form-group">
+                <label for="options_page">Options Page (Legacy)</label>
+                <input
+                  type="text"
+                  id="options_page"
+                  placeholder="options.html"
+                />
+              </div>
+
+              <div class="subsection-title">Options UI (Recommended)</div>
+
+              <div class="form-group">
+                <label for="options_ui_page">Page</label>
+                <input
+                  type="text"
+                  id="options_ui_page"
+                  placeholder="options.html"
+                />
+              </div>
+
+              <div class="form-group">
+                <label>
+                  <input type="checkbox" id="options_ui_open_in_tab" />
+                  Open in new tab
+                </label>
+              </div>
+            </div>
+
+            <!-- SIDE PANEL -->
+            <div
+              class="section-title collapsible"
+              onclick="toggleSection('sidepanel')"
+            >
+              Side Panel
+            </div>
+            <div id="sidepanel-content" class="collapsible-content">
+              <div class="form-group">
+                <label for="side_panel_path">Default Path</label>
+                <input
+                  type="text"
+                  id="side_panel_path"
+                  placeholder="sidepanel.html"
+                />
+              </div>
+            </div>
+
+            <!-- DEVTOOLS -->
+            <div
+              class="section-title collapsible"
+              onclick="toggleSection('devtools')"
+            >
+              DevTools
+            </div>
+            <div id="devtools-content" class="collapsible-content">
+              <div class="form-group">
+                <label for="devtools_page">DevTools Page</label>
+                <input
+                  type="text"
+                  id="devtools_page"
+                  placeholder="devtools.html"
+                />
+              </div>
+            </div>
+
+            <!-- WEB ACCESSIBLE RESOURCES -->
+            <div
+              class="section-title collapsible"
+              onclick="toggleSection('web-resources')"
+            >
+              Web Accessible Resources
+            </div>
+            <div id="web-resources-content" class="collapsible-content">
+              <div id="web-resources-container"></div>
+              <button class="btn-add" onclick="addWebResource()">
+                + Add Resource Group
+              </button>
+            </div>
+
+            <!-- OMNIBOX -->
+            <div
+              class="section-title collapsible"
+              onclick="toggleSection('omnibox')"
+            >
+              Omnibox
+            </div>
+            <div id="omnibox-content" class="collapsible-content">
+              <div class="form-group">
+                <label for="omnibox_keyword">Keyword</label>
+                <input
+                  type="text"
+                  id="omnibox_keyword"
+                  placeholder="myextension"
+                />
+                <div class="hint">
+                  Keyword to trigger your extension in address bar
+                </div>
+              </div>
+            </div>
+
+            <!-- COMMANDS -->
+            <div
+              class="section-title collapsible"
+              onclick="toggleSection('commands')"
+            >
+              Commands (Keyboard Shortcuts)
+            </div>
+            <div id="commands-content" class="collapsible-content">
+              <div id="commands-container"></div>
+              <button class="btn-add" onclick="addCommand()">
+                + Add Command
+              </button>
+            </div>
+
+            <!-- DECLARATIVE NET REQUEST -->
+            <div
+              class="section-title collapsible"
+              onclick="toggleSection('dnr')"
+            >
+              Declarative Net Request
+            </div>
+            <div id="dnr-content" class="collapsible-content">
+              <div id="dnr-container"></div>
+              <button class="btn-add" onclick="addDNRRule()">
+                + Add Rule Resource
+              </button>
+            </div>
+
+            <!-- EXTERNALLY CONNECTABLE -->
+            <div
+              class="section-title collapsible"
+              onclick="toggleSection('externally')"
+            >
+              Externally Connectable
+            </div>
+            <div id="externally-content" class="collapsible-content">
+              <div class="form-group">
+                <label>Matches</label>
+                <textarea
+                  id="externally_matches"
+                  placeholder="https://example.com/*"
+                ></textarea>
+                <div class="hint">One URL pattern per line</div>
+              </div>
+
+              <div class="form-group">
+                <label>Extension IDs</label>
+                <textarea
+                  id="externally_ids"
+                  placeholder="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                ></textarea>
+                <div class="hint">One extension ID per line</div>
+              </div>
+
+              <div class="form-group">
+                <label>
+                  <input type="checkbox" id="externally_tls" />
+                  Accepts TLS Channel ID
+                </label>
+              </div>
+            </div>
+
+            <!-- CHROME URL OVERRIDES -->
+            <div
+              class="section-title collapsible"
+              onclick="toggleSection('overrides')"
+            >
+              Chrome URL Overrides
+            </div>
+            <div id="overrides-content" class="collapsible-content">
+              <div class="form-group">
+                <label for="override_newtab">New Tab</label>
+                <input
+                  type="text"
+                  id="override_newtab"
+                  placeholder="newtab.html"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="override_bookmarks">Bookmarks</label>
+                <input
+                  type="text"
+                  id="override_bookmarks"
+                  placeholder="bookmarks.html"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="override_history">History</label>
+                <input
+                  type="text"
+                  id="override_history"
+                  placeholder="history.html"
+                />
+              </div>
+            </div>
+
+            <!-- CONTENT SECURITY POLICY -->
+            <div
+              class="section-title collapsible"
+              onclick="toggleSection('csp')"
+            >
+              Content Security Policy
+            </div>
+            <div id="csp-content" class="collapsible-content">
+              <div class="form-group">
+                <label for="csp_extension">Extension Pages</label>
+                <textarea
+                  id="csp_extension"
+                  placeholder="script-src 'self'; object-src 'self'"
+                ></textarea>
+              </div>
+
+              <div class="form-group">
+                <label for="csp_sandbox">Sandbox</label>
+                <textarea
+                  id="csp_sandbox"
+                  placeholder="sandbox allow-scripts; script-src 'self'"
+                ></textarea>
+              </div>
+            </div>
+
+            <!-- SANDBOX -->
+            <div
+              class="section-title collapsible"
+              onclick="toggleSection('sandbox')"
+            >
+              Sandbox
+            </div>
+            <div id="sandbox-content" class="collapsible-content">
+              <div class="form-group">
+                <label>Sandboxed Pages</label>
+                <textarea
+                  id="sandbox_pages"
+                  placeholder="sandbox.html"
+                ></textarea>
+                <div class="hint">One page path per line</div>
+              </div>
+            </div>
+
+            <!-- STORAGE -->
+            <div
+              class="section-title collapsible"
+              onclick="toggleSection('storage')"
+            >
+              Storage
+            </div>
+            <div id="storage-content" class="collapsible-content">
+              <div class="form-group">
+                <label for="managed_schema">Managed Schema</label>
+                <input
+                  type="text"
+                  id="managed_schema"
+                  placeholder="schema.json"
+                />
+              </div>
+            </div>
+
+            <!-- OAUTH2 -->
+            <div
+              class="section-title collapsible"
+              onclick="toggleSection('oauth')"
+            >
+              OAuth2
+            </div>
+            <div id="oauth-content" class="collapsible-content">
+              <div class="form-group">
+                <label for="oauth_client_id">Client ID</label>
+                <input
+                  type="text"
+                  id="oauth_client_id"
+                  placeholder="123456789.apps.googleusercontent.com"
+                />
+              </div>
+
+              <div class="form-group">
+                <label>Scopes</label>
+                <textarea
+                  id="oauth_scopes"
+                  placeholder="https://www.googleapis.com/auth/userinfo.email"
+                ></textarea>
+                <div class="hint">One scope per line</div>
+              </div>
+            </div>
+
+            <!-- CROSS ORIGIN POLICIES -->
+            <div
+              class="section-title collapsible"
+              onclick="toggleSection('cors')"
+            >
+              Cross-Origin Policies
+            </div>
+            <div id="cors-content" class="collapsible-content">
+              <div class="form-group">
+                <label for="coep">Cross-Origin-Embedder-Policy</label>
+                <select id="coep">
+                  <option value="">None</option>
+                  <option value="require-corp">require-corp</option>
+                  <option value="credentialless">credentialless</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="coop">Cross-Origin-Opener-Policy</label>
+                <select id="coop">
+                  <option value="">None</option>
+                  <option value="same-origin">same-origin</option>
+                  <option value="same-origin-allow-popups">
+                    same-origin-allow-popups
+                  </option>
+                  <option value="restrict-properties">
+                    restrict-properties
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <!-- ADVANCED SETTINGS -->
+            <div
+              class="section-title collapsible"
+              onclick="toggleSection('advanced')"
+            >
+              Advanced Settings
+            </div>
+            <div id="advanced-content" class="collapsible-content">
+              <div class="form-group">
+                <label for="minimum_chrome_version"
+                  >Minimum Chrome Version</label
+                >
+                <input
+                  type="text"
+                  id="minimum_chrome_version"
+                  placeholder="88"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="incognito">Incognito Behavior</label>
+                <select id="incognito">
+                  <option value="">Default (spanning)</option>
+                  <option value="spanning">Spanning</option>
+                  <option value="split">Split</option>
+                  <option value="not_allowed">Not Allowed</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="default_locale">Default Locale</label>
+                <input type="text" id="default_locale" placeholder="en" />
+                <div class="hint">Required if _locales directory exists</div>
+              </div>
+
+              <div class="form-group">
+                <label for="update_url">Update URL</label>
+                <input
+                  type="url"
+                  id="update_url"
+                  placeholder="https://example.com/updates.xml"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="key">Key</label>
+                <textarea
+                  id="key"
+                  placeholder="MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA..."
+                ></textarea>
+                <div class="hint">Public key for consistent extension ID</div>
+              </div>
+
+              <div class="form-group">
+                <label>
+                  <input type="checkbox" id="offline_enabled" />
+                  Offline Enabled
+                </label>
+              </div>
+            </div>
+
+            <!-- TTS ENGINE -->
+            <div
+              class="section-title collapsible"
+              onclick="toggleSection('tts')"
+            >
+              Text-to-Speech Engine
+            </div>
+            <div id="tts-content" class="collapsible-content">
+              <div id="tts-container"></div>
+              <button class="btn-add" onclick="addTTSVoice()">
+                + Add Voice
+              </button>
+            </div>
+
+            <!-- REQUIREMENTS -->
+            <div
+              class="section-title collapsible"
+              onclick="toggleSection('requirements')"
+            >
+              Requirements
+            </div>
+            <div id="requirements-content" class="collapsible-content">
+              <div class="form-group">
+                <label>
+                  <input type="checkbox" id="require_3d" />
+                  Require 3D Graphics (WebGL)
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- OUTPUT PANEL -->
+        <div class="panel output inner-padding">
+          <h2>Generated manifest.json</h2>
+          <pre><code id="output" class="language-json">{
   "manifest_version": 3,
   "name": "My Extension",
   "version": "1.0.0",
   "description": "Extension description"
 }</code></pre>
-                <div class="button-group">
-                    <button class="btn-primary" onclick="downloadManifest()">📥 Download</button>
-                    <button class="btn-secondary" onclick="copyToClipboard()">📋 Copy</button>
-                </div>
-            </div>
+          <div class="button-group">
+            <button class="btn-primary" onclick="downloadManifest()">
+              📥 Download
+            </button>
+            <button class="btn-secondary" onclick="copyToClipboard()">
+              📋 Copy
+            </button>
+          </div>
         </div>
+      </div>
     </div>
     <div class="toast" id="toast">Copied to clipboard!</div>
     <footer>
-        <p>Copyright © 2025 <a href="https://evenzero.in">evenzero</a></p>
+      <p>Copyright © 2025 <a href="https://evenzero.in">evenzero</a></p>
     </footer>
     <script src="/disallow-mobile.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-json.min.js"></script>
     <script src="/script.js"></script>
-</body>
+    <script src="https://cdn.jsdelivr.net/npm/drkmd-js/dist/drkmd-js.min.js"></script>
+    <script>
+      // Wait for Darkmode to be available
+      function initDarkmode() {
+        if (typeof Darkmode !== "undefined") {
+          const options = {
+            buttonColorDark: "#1a0500",
+            buttonColorLight: "#ffedeb",
+            bottom: "32px",
+            right: "32px",
+            time: "0.3s",
+            saveInCookies: true,
+            label: "🌓",
+          };
+          new Darkmode(options).attach();
+        } else {
+          // Retry after 50ms if not loaded yet
+          setTimeout(initDarkmode, 50);
+        }
+      }
 
+      initDarkmode();
+    </script>
+  </body>
 </html>
