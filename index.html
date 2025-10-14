@@ -4,8 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
 
     <!-- Primary SEO Tags -->
     <title>V3 Manifest Builder - Chrome Extension Manifest Generator</title>
@@ -37,7 +39,6 @@
     <link rel="canonical" href="https://v3manifestbuilder.vercel.app/">
 
     <!-- Mobile blocking - MUST load first, synchronously -->
-    <script src="./disallow-mobile.js"></script>
 
     <script type="application/ld+json">
     {
@@ -58,8 +59,6 @@
 
     <!-- Include Prism.js -->
     <link href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-json.min.js"></script>
     <link rel="icon" href="https://raw.githubusercontent.com/inversepolarity/ip/refs/heads/main/favicon.ico"
         type="image/x-icon">
 
@@ -515,7 +514,10 @@
     <footer>
         <p>Copyright © 2025 <a href="https://evenzero.in">evenzero</a></p>
     </footer>
-    <script src="./script.js" />
+    <script src="/disallow-mobile.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-json.min.js"></script>
+    <script src="/script.js"></script>
 </body>
 
 </html>
