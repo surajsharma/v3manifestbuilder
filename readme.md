@@ -1,1 +1,1 @@
-![screenshot](public/og-image.png)
+![screenshot](og-image.png)
