@@ -12,7 +12,6 @@
     };
 
     if (isMobile.any() || window.innerWidth <= 768) {
-        document.body.style.display = 'none';
         alert('This website is not accessible from mobile devices. Please use a desktop computer.');
         window.location.href = 'https://evenzero.in';
     } else {
